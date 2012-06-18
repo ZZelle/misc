@@ -38,6 +38,9 @@ class Proxy():
     def clear_term(self):
         self.proxy.clear_term(self.uuid)
 
+    def add_tab(self):
+        print self.proxy.add_tab()
+
 
 class FuncAction(argparse.Action):
     def __init__(self, option_strings, func=None, nargs=0, **kwargs):
@@ -61,6 +64,7 @@ def main():
     add_arg('-U', '--nouuid', func=proxy.set_target)
     add_arg('-o', '--hori', func=proxy.hsplit_term)
     add_arg('-e', '--vert', func=proxy.vsplit_term)
+    add_arg('-t', '--tab', func=proxy.add_tab)
     add_arg('-c', '--clear', func=proxy.clear_term)
     add_arg('-r', '--run', func=proxy.run_term, nargs=1)
     add_arg('-s', '--RUN', func=proxy.run_term, nargs=argparse.REMAINDER)
