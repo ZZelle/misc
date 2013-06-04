@@ -8,10 +8,11 @@ import sys
 def parse():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fast',    '-f', help='expression to allocate to r before piping')
+    parser.add_argument('--init',    '-i', help='expression to allocate to r before piping')
     parser.add_argument('--begin',   '-b', help='expression to run before piping')
     parser.add_argument('--end',     '-e', help='expression to run after piping')
-    parser.add_argument('--implode', '-i', help='implode piping', action="store_true")
+    parser.add_argument('--filter',  '-f', help='filter expression (not working with --implode)', action="store_true")
+    parser.add_argument('--implode', '-I', help='implode piping', action="store_true")
     parser.add_argument('expr', nargs='+', help='expression to run')
     del argparse # avoid to polluate exec context
     return parser.parse_args()
@@ -21,22 +22,22 @@ def run(args):
     context = {k: v for k, v in globals().items() if inspect.ismodule(v)}
     if args.begin:
         exec args.begin in context
-    elif args.fast:
-        exec 'r = (%s)' % args.fast in context
+    if args.init:
+        exec 'r = (%s)' % args.init in context
 
     args.expr = 'r = (%s)' % ' '.join(args.expr)
-    def loop():
-        exec args.expr in context
-        if context['r']:
-            print context['r']
     try:
         if args.implode:
-            context.update(x=(y.strip() for y in sys.stdin))
-            loop()
+            context.update(x=[y.strip() for y in sys.stdin])
+            exec args.expr in context
+            if context['r']:
+                print context['r']
         else:
             for i, x in enumerate(sys.stdin):
                 context.update(i=i, x=x.strip())
-                loop()
+                exec args.expr in context
+                if context['r']:
+                    print context['x'] if args.filter else context['r']
     finally:
         context.pop('i', None)
         context.pop('x', None)
