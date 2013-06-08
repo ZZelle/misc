@@ -24,71 +24,63 @@ class FuncAction(argparse.Action):
         if not items:
             items = []
             setattr(namespace, self.dest, items)
-        expr = 'x = (%s)' % ' '.join(values)
-        ifunc_expr = lambda c, it: self.func(expr, c, it)
+        ifunc_expr = lambda c, it: self.func(values, c, it)
         items.append(ifunc_expr)
 
 ## functions
-def _execute(expr, context, it):
-    for x in it:
-        context['x'] = x
+def _execute(expr_parts, context, it):
+    expr = 'x = (%s)' % ' '.join(expr_parts)
+    for i, x in enumerate(it):
+        context.update(i=i, x=x)
         exec expr in context
         if context['x']:
             yield context['x']
 
-def _filter(expr, context, it):
-    for x in it:
-        context['x'] = x
-        exec expr in context
-        if context['x']:
-            yield x
+def _filter(expr_parts, context, it):
+    expr_parts = ('(%s) and x ' % ' '.join(expr_parts)).split(' ')
+    return _execute(expr_parts, context, it)
 
-def _print(context, it):
+def _print(expr_parts, context, it):
     for x in it:
         print x
         yield x
 
-def _run(context, it):
-    for x in it:
-        yield x
-
+def _sh(expr_parts, context, it):
+    splitteds = ' '.join(expr_parts).split(' ')
+    replace_by_i = [j for j, y in enumerate(splitteds) if y == 'i']
+    replace_by_x = [j for j, y in enumerate(splitteds) if y == 'x']
+    for i, x in enumerate(it):
+        for j in replace_by_i:
+            splitteds[j] = str(i)
+        for j in replace_by_x:
+            splitteds[j] = x
+        yield subprocess.check_output(' '.join(splitteds), shell=True).rstrip()
 
 
 def parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--begin',   '-b', help='expression to run before piping')
-    parser.add_argument('--end',     '-e', help='expression to run after piping')
+    parser.add_argument('exec_parts',      action=FuncAction, func=_execute)
     parser.add_argument('--exec',    '-x', action=FuncAction, func=_execute)
     parser.add_argument('--filter',  '-f', action=FuncAction, func=_filter)
-    parser.add_argument('--run',     '-r', action=FuncAction, func=_run)
+    parser.add_argument('--sh',      '-s', action=FuncAction, func=_sh)
+    parser.add_argument('--print',   '-p', action=FuncAction, func=_print, nargs=0)
+    parser.add_argument('--implode', '-I', action='store_true')
     return parser.parse_args()
 
 
 def run(args):
     it = (x.rstrip() for x in sys.stdin)
-    args.actions.append(_print)
-    for action in args.actions:
-        context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
-        it = action(context, it)
-    list(it)
-
-
-    if args.begin:
-        exec args.begin in context
-    try:
-        args.actions.append(_print)
-        for x in sys.stdin:
-            x = x.rstrip()
-            for func_expr in args.actions:
-                context.update(x=x)
-                x = func_expr(context)
-                if not x:
-                    break
-    finally:
-        context.pop('i', None)
-        context.pop('x', None)
-        if args.end:
-            exec args.end in context
+    if args.implode:
+        for action in args.actions:
+            context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
+            it = [x for x in action(context, it) if x]
+    else:
+        for action in args.actions:
+            context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
+            it = action(context, it)
+    for x in it:
+        if x:
+            print x
 
 
 if __name__ == '__main__':
@@ -96,5 +88,4 @@ if __name__ == '__main__':
     try:
         run(args)
     except KeyboardInterrupt as err:
-        print err
         pass
