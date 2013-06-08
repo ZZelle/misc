@@ -1,50 +1,100 @@
-#!/usr/bin/env python
+#!/usr/bin/python -u
+import argparse
 import inspect
 import os
 import re
+import subprocess
 import sys
 
 
+## tools
+class kdict(dict):
+    @staticmethod
+    def __missing__(key):
+        return key
+
+class FuncAction(argparse.Action):
+    def __init__(self, *args, **kwargs):
+        self.func = kwargs.pop('func', None)
+        kwargs.setdefault('nargs', '*')
+        kwargs['dest'] =  'actions'
+        super(FuncAction, self).__init__(*args, **kwargs)
+    def __call__(self, parser, namespace, values, option_string=None):
+        items = getattr(namespace, self.dest, None)
+        if not items:
+            items = []
+            setattr(namespace, self.dest, items)
+        expr = 'x = (%s)' % ' '.join(values)
+        ifunc_expr = lambda c, it: self.func(expr, c, it)
+        items.append(ifunc_expr)
+
+## functions
+def _execute(expr, context, it):
+    for x in it:
+        context['x'] = x
+        exec expr in context
+        if context['x']:
+            yield context['x']
+
+def _filter(expr, context, it):
+    for x in it:
+        context['x'] = x
+        exec expr in context
+        if context['x']:
+            yield x
+
+def _print(context, it):
+    for x in it:
+        print x
+        yield x
+
+def _run(context, it):
+    for x in it:
+        yield x
+
+
+
 def parse():
-    import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--init',    '-i', help='expression to allocate to r before piping')
     parser.add_argument('--begin',   '-b', help='expression to run before piping')
     parser.add_argument('--end',     '-e', help='expression to run after piping')
-    parser.add_argument('--filter',  '-f', help='filter expression (not working with --implode)', action="store_true")
-    parser.add_argument('--implode', '-I', help='implode piping', action="store_true")
-    parser.add_argument('expr', nargs='+', help='expression to run')
-    del argparse # avoid to polluate exec context
+    parser.add_argument('--exec',    '-x', action=FuncAction, func=_execute)
+    parser.add_argument('--filter',  '-f', action=FuncAction, func=_filter)
+    parser.add_argument('--run',     '-r', action=FuncAction, func=_run)
     return parser.parse_args()
 
 
 def run(args):
-    context = {k: v for k, v in globals().items() if inspect.ismodule(v)}
+    it = (x.rstrip() for x in sys.stdin)
+    args.actions.append(_print)
+    for action in args.actions:
+        context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
+        it = action(context, it)
+    list(it)
+
+
     if args.begin:
         exec args.begin in context
-    if args.init:
-        exec 'r = (%s)' % args.init in context
-
-    args.expr = 'r = (%s)' % ' '.join(args.expr)
     try:
-        if args.implode:
-            context.update(x=[y.strip() for y in sys.stdin])
-            exec args.expr in context
-            if context['r']:
-                print context['r']
-        else:
-            for i, x in enumerate(sys.stdin):
-                context.update(i=i, x=x.strip())
-                exec args.expr in context
-                if context['r']:
-                    print context['x'] if args.filter else context['r']
+        args.actions.append(_print)
+        for x in sys.stdin:
+            x = x.rstrip()
+            for func_expr in args.actions:
+                context.update(x=x)
+                x = func_expr(context)
+                if not x:
+                    break
     finally:
         context.pop('i', None)
         context.pop('x', None)
         if args.end:
             exec args.end in context
-        
-    
+
+
 if __name__ == '__main__':
     args = parse()
-    run(args)
+    try:
+        run(args)
+    except KeyboardInterrupt as err:
+        print err
+        pass
