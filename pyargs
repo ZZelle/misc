@@ -1,6 +1,7 @@
 #!/usr/bin/python -u
 import argparse
 import inspect
+import itertools
 import os
 import re
 import subprocess
@@ -59,25 +60,21 @@ def _sh(expr_parts, context, it):
 
 def parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('exec_parts',      action=FuncAction, func=_execute)
     parser.add_argument('--exec',    '-x', action=FuncAction, func=_execute)
     parser.add_argument('--filter',  '-f', action=FuncAction, func=_filter)
     parser.add_argument('--sh',      '-s', action=FuncAction, func=_sh)
     parser.add_argument('--print',   '-p', action=FuncAction, func=_print, nargs=0)
     parser.add_argument('--implode', '-I', action='store_true')
+    #parser.add_argument('exec_parts',      action=FuncAction, func=_execute)
     return parser.parse_args()
 
 
 def run(args):
-    it = (x.rstrip() for x in sys.stdin)
-    if args.implode:
-        for action in args.actions:
-            context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
-            it = [x for x in action(context, it) if x]
-    else:
-        for action in args.actions:
-            context = kdict({k: v for k, v in globals().items() if inspect.ismodule(v)})
-            it = action(context, it)
+    it = itertools.imap(lambda x: x.rstrip(), iter(sys.stdin.readline, ''))
+    it_func = list if args.implode else lambda x: x
+    for action in args.actions:
+        context = kdict([kv for kv in globals().items() if inspect.ismodule(kv[1])])
+        it = it_func(action(context, it))
     for x in it:
         if x:
             print x
