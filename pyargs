@@ -8,11 +8,10 @@ import subprocess
 import sys
 
 
-## tools
+## tools 
 class kdict(dict):
-    @staticmethod
-    def __missing__(key):
-        return key
+    def __missing__(self, key):
+        return getattr(self['__builtins__'], key, key)
 
 class FuncAction(argparse.Action):
     def __init__(self, *args, **kwargs):
