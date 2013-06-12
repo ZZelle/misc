@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+import collections
+import os
+import re
+import subprocess
+import sys
+
+
+def get_filemap_path():
+    gitdir = subprocess.check_output(['git', 'rev-parse', '--git-dir']).strip()
+    return os.path.join(gitdir, 'filemap')
+
+def get_filemap():
+    try:
+        with open(get_filemap_path()) as f:
+            return {k: v.strip() for k, v in enumerate(f) if k}
+    except IOError:
+        return dict()
+
+def build_filemap():
+    output = subprocess.check_output(['git', 'status', '--short'])
+    work = (x.strip().split(' ') for x in output.splitlines())
+    lines = (x[-1]+'\n' for x in work if len(x) == 2)
+    with open(get_filemap_path(), 'w') as f:
+        f.write('\n')
+        f.writelines(lines)
+
+
+_PATTERN = re.compile('([0-9]+)-([0-9]+)$')
+def rewrite_args(strings):
+    filemap = get_filemap()
+    filemap.update(((str(k), v) for k, v in filemap.items()))
+    for cursor in strings:
+        matched = _PATTERN.match(cursor)
+        if not matched:
+            yield filemap.get(cursor, cursor)
+            continue
+        start, end = [int(x) for x in matched.groups()]
+        sign = -1 if start > end else 1
+        for x in xrange(start, end + sign, sign):
+            yield filemap.get(x, x)
+
+
+def rewrite_git_status(args):
+    build_filemap()
+    filetuple = get_filemap().items()
+    filetuple += [(k, '#\t'+v) for k, v in filetuple]
+    output = subprocess.check_output(args)
+    for l in output.splitlines():
+        ll  = l.split(' ')
+        for k, v in filetuple:
+            if v in ll:
+                l = '%- 2d' % k + l
+                break
+        yield l
+
+
+def main():
+    if len(sys.argv) == 1:
+        sys.argv[1:] = ['status', '-sb']
+    if 'status' in sys.argv:
+        sys.argv[0:1] = 'git', '-c', 'color.ui=always'
+        sys.argv.append('-sb')
+        print '\n'.join(rewrite_git_status(sys.argv))
+    else:
+        args = ['git'] + list(rewrite_args(sys.argv[1:]))
+        subprocess.call(args)
+
+
+if __name__ == '__main__':
+    main()
+
