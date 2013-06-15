@@ -46,30 +46,40 @@ def _print(expr_parts, context, it):
         yield x
 
 def _sh(expr_parts, context, it):
-    splitteds = ' '.join(expr_parts).split(' ')
-    replace_by_i = [j for j, y in enumerate(splitteds) if y == 'i']
-    replace_by_x = [j for j, y in enumerate(splitteds) if y == 'x']
+    expr_pattern = ' '.join(expr_parts)
     for i, x in enumerate(it):
-        for j in replace_by_i:
-            splitteds[j] = str(i)
-        for j in replace_by_x:
-            splitteds[j] = x
-        yield subprocess.check_output(' '.join(splitteds), shell=True).rstrip()
+        expr = expr_pattern.replace('XX', x).replace('II', str(i))
+        yield subprocess.check_output(expr, shell=True).rstrip()
 
 
 def parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--exec',    '-x', action=FuncAction, func=_execute)
-    parser.add_argument('--filter',  '-f', action=FuncAction, func=_filter)
-    parser.add_argument('--sh',      '-s', action=FuncAction, func=_sh)
-    parser.add_argument('--print',   '-p', action=FuncAction, func=_print, nargs=0)
-    parser.add_argument('--implode', '-I', action='store_true')
+    parser.add_argument('--exec',      '-x', action=FuncAction, func=_execute)
+    parser.add_argument('--filter',    '-f', action=FuncAction, func=_filter)
+    parser.add_argument('--sh',        '-s', action=FuncAction, func=_sh)
+    parser.add_argument('--print',     '-p', action=FuncAction, func=_print, nargs=0)
+    parser.add_argument('--implode',   '-I', action='store_true')
+    parser.add_argument('--delimiter', '-d') 
     #parser.add_argument('exec_parts',      action=FuncAction, func=_execute)
     return parser.parse_args()
 
 
 def run(args):
-    it = itertools.imap(lambda x: x.rstrip(), iter(sys.stdin.readline, ''))
+    it = iter(sys.stdin.readline, '')
+    if args.delimiter:
+        def f(it0):
+           delim = args.delimiter
+           left = ''
+           for line in it0:
+               splitteds = (left + line).split(delim)
+               for x in splitteds[:-1]:
+                   yield x
+               left = splitteds[-1]
+           yield left
+        it = f(it)
+    else:
+        it = itertools.imap(lambda x: x.rstrip(), it)
+
     it_func = list if args.implode else lambda x: x
     for action in args.actions:
         context = kdict([kv for kv in globals().items() if inspect.ismodule(kv[1])])
