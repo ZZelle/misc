@@ -51,7 +51,7 @@ def _execute_imploded(args, expr_parts, context, it):
 
 def _filter(args, expr_parts, context, it):
     expr_parts = ('(%s) and x ' % ' '.join(expr_parts)).split(' ')
-    return _execute(expr_parts, context, it)
+    return _execute(args, expr_parts, context, it)
 
 def _print(args, expr_parts, context, it):
     for x in it:
