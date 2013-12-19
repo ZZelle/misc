@@ -1,0 +1,17 @@
+[alias]
+        alias = !git config -l | grep alias | cut -c 7-
+	b = branch -av
+	c = commit
+	cm = "!f(){ git commit -m \"$*\"; }; f"
+        d = diff
+        ds = diff --staged
+        dw = diff --color-words
+        l = "!f(){ git ll $@| head -n${LENGTH-10}; }; f"
+        la = !git l --all
+	ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+	lll = !git ll --stat
+	lc = !git lll --no-merges ORIG_HEAD..
+	lm = !git lll --no-merges 
+        number = !git-number
+	unadd = reset HEAD
+        rr = "!f(){ cd $1; shift; git \"$@\"; }; f"
