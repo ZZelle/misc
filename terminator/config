@@ -11,11 +11,12 @@
   paste = <Control>v
 [profiles]
   [[default]]
+    use_system_font = False
     background_darkness = 0.9
     scrollback_lines = 10000
-    font = Monospace 9
     background_type = transparent
-    use_system_font = False
+    background_image = None
+    font = Monospace 9
 [layouts]
   [[default]]
     [[[child1]]]
