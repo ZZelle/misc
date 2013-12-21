@@ -1,0 +1,19 @@
+### OS
+unset envos
+envos (){ 
+  keystone=${KEYSTONE-localhost}
+  export OS_NO_CACHE=yes;
+  if [[ "$1" = "" ]]; then
+    unset OS_USERNAME OS_PASSWORD OS_TENANT_NAME OS_AUTH_URL OS_AUTH_TOK OS_REGION_NAME;
+    export SERVICE_TOKEN=ADMIN;
+    export SERVICE_ENDPOINT=http://$keystone:35357/v2.0;
+  else
+    unset SERVICE_TOKEN SERVICE_ENDPOINT;
+    export OS_USERNAME=$1;
+    export OS_REGION_NAME=${3-regionOne};
+    export OS_PASSWORD=${4-$1};
+    export OS_TENANT_NAME=${2-$1};
+    export OS_AUTH_URL=http://$keystone:5000/v2.0;
+    export OS_AUTH_TOK=$(keystone token-get |awk 'NR==5 {print $4}');
+  fi
+}

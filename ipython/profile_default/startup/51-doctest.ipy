@@ -1,0 +1,3 @@
+sys.stdout = open('/dev/null', 'w')
+%doctest_mode
+sys.stdout = sys.__stdout__

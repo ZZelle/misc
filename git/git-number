@@ -5,9 +5,20 @@ import re
 import subprocess
 import sys
 
+class OutsideRepo(Exception):
+    ' Raised if outside repo git'
+
+def run_git_command(*args, **kwargs):
+    kwargs.setdefault('stderr', subprocess.PIPE)
+    try:
+        return subprocess.check_output(*args, **kwargs)
+    except:
+        raise OutsideRepo
+
 
 def get_filemap_path():
-    gitdir = subprocess.check_output(['git', 'rev-parse', '--git-dir']).strip()
+    command = ['git', 'rev-parse', '--git-dir']
+    gitdir = run_git_command(command).strip()
     return os.path.join(gitdir, 'filemap')
 
 def get_filemap():
@@ -15,10 +26,12 @@ def get_filemap():
         with open(get_filemap_path()) as f:
             return {k: v.strip() for k, v in enumerate(f) if k}
     except IOError:
-        return dict()
+        return {}
 
 def build_filemap():
-    output = subprocess.check_output(['git', 'status', '--short'])
+    command = ['git', 'status', '--short']
+    output = run_git_command(command)
+
     work = (x.strip().split(' ') for x in output.splitlines())
     lines = (x[-1]+'\n' for x in work if len(x) == 2)
     with open(get_filemap_path(), 'w') as f:
@@ -58,13 +71,19 @@ def rewrite_git_status(args):
 def main():
     if len(sys.argv) == 1:
         sys.argv[1:] = ['status', '-sb']
-    if 'status' in sys.argv:
-        sys.argv[0:1] = 'git', '-c', 'color.ui=always'
-        sys.argv.append('-sb')
-        print '\n'.join(rewrite_git_status(sys.argv))
-    else:
-        args = ['git'] + list(rewrite_args(sys.argv[1:]))
-        subprocess.call(args)
+
+    sys.argv[0] = 'git'
+    try:
+        if 'status' in sys.argv:
+            sys.argv[1:1] = '-c', 'color.ui=always'
+            sys.argv.append('-sb')
+            print '\n'.join(rewrite_git_status(sys.argv))
+        else:
+            args = list(rewrite_args(sys.argv))
+            subprocess.call(args)
+    except OutsideRepo:
+        # Failback to "standard" git
+        subprocess.call(sys.argv)
 
 
 if __name__ == '__main__':

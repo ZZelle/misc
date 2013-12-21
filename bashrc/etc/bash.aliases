@@ -1,0 +1,28 @@
+_command_exists() { command -v $1 &/>/dev/null;}
+
+# misc features
+alias ll='ls -lh'
+alias la='ls -A'
+alias c='clear'
+alias psgrep='ps -ef | grep -v grep | grep'
+alias nwgrep='netstat -tulpn | grep'
+publish() { (cd ${1:-'.'}; python -m SimpleHTTPServer ${2:-})}
+command -v colordiff &>/dev/null && alias diff=colordiff
+
+
+# ovs features
+_command_exists ovs-vsctl && ovs () { sudo /usr/bin/ovs-vsctl ${@:-show}; }
+_command_exists ovs-ofctl && ovsf() { sudo /usr/bin/ovs-ofctl ${@:-dump-flows br-int}; }
+
+
+# python features
+python-nopyc() { export PYTHONDONTWRITEBYTECODE=1; find . -name \*.py[co] -delete;}
+python-find()  { python -c "import $1; print $1.__file__" | sed "s/\.py./\.py/" | xargs readlink -m;}
+python-grep()  { find . -name \*.py | egrep -v ${PYG:-'^$'} | xargs grep -n --color "$@";}
+python-vi()    { FILE=$(python-find $1); test $? -eq 0 && vi -R $FILE;}
+
+
+# prompt features
+PS1='\[\e]0;${PTITLE-\h:\w}\a\]${PROMPT-\h:\w}\$ '
+ptitle() { [ "$#" -eq 0 ] && unset PTITLE || export PTITLE="$1";}
+prompt() { [ "$#" -eq 0 ] && unset PROMPT || export PROMPT="$1";}
