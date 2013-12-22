@@ -1,4 +1,4 @@
-_command_exists() { command -v $1 &/>/dev/null;}
+_command_exists() { command -v $1 &>/dev/null;}
 
 # misc features
 alias ll='ls -lh'

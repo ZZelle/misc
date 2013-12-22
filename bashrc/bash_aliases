@@ -1,4 +1,4 @@
 [ -f /etc/bash.aliases ] && source /etc/bash.aliases
-for FILE in .bash_*_aliases; do
+for FILE in ~/.bash_*_aliases; do
   source $FILE
 done
