@@ -13,5 +13,5 @@ for FILE in bashrc/etc/bash.*aliases; do
   sudo ln -s $PWD/$FILE /etc/$(basename $FILE)
 done
 for FILE in bashrc/bash_*aliases; do
-  ln -s $PWD/bashrc/$FILE ~/.$(basename $FILE)
+  ln -s $PWD/$FILE ~/.$(basename $FILE)
 done
