@@ -1,4 +1,13 @@
+shopt -q nullglob
+NULLGLOBED=$?
+shopt -s nullglob
+
 [ -f /etc/bash.aliases ] && source /etc/bash.aliases
+for FILE in /etc/bash.*.aliases; do
+  source $FILE
+done
 for FILE in ~/.bash_*_aliases; do
   source $FILE
 done
+
+[ $NULLGLOBED -ne 0 ] && shopt -u nullglob
