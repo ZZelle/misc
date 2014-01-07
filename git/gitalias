@@ -6,8 +6,8 @@
         d = diff
         ds = diff --staged
         dw = diff --color-words
-        l = "!f(){ git ll $@| head -n${LENGTH-10}; }; f"
-        la = !git l --all
+        l = "!f(){ git ll ${@:--10}; }; f"
+        la = "!f(){ git ll --all ${@:--10}; }; f"
 	ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	lll = !git ll --stat
 	lc = !git lll --no-merges ORIG_HEAD..
