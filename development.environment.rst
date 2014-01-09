@@ -159,7 +159,7 @@ More detailed instructions are located here - http://novaremotedebug.blogspot.co
 Using fake computes for tests
 -----------------------------
 
-The number of instances supported by a fake compute is not limited by physical constraints.
+The number of instances supported by fake computes is not limited by physical constraints.
 It allows to perform stress tests on a deployment with few resources (typically a laptop).
 
 Fake computes can also be used in multi hypervisor-type deployment in order to take advantages of fake and "real" computes during tests
