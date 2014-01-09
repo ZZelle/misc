@@ -160,13 +160,10 @@ Using fake computes for tests
 -----------------------------
 
 The number of instances supported by a fake compute is not limited by physical constraints.
-It allows to perform stress tests on a deployment with few resources.
-
+It allows to perform stress tests on a deployment with few resources (typically a laptop).
 
 Fake computes can also be used in multi hypervisor-type deployment in order to take advantages of fake and "real" computes during tests
-
-* many fake instances for stress tests
-* some "real" instances for functional tests
+(ie: many fake instances for stress tests, some "real" ones for functional tests)
 
 Fake computes can be used for testing Nova itself but also applications on top of it (OpenStack and non-OpenStack ones).
 
