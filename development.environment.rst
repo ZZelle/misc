@@ -161,20 +161,15 @@ Using fake computes for tests
 
 The number of instances supported by fake computes is not limited by physical constraints.
 It allows to perform stress tests on a deployment with few resources (typically a laptop).
-You must avoid to use in nova-scheduler filters limiting the number of instances per compute (like RamFilter, DiskFilter, AggregateCoreFilter),
+But you must avoid to use in nova-scheduler filters limiting the number of instances per compute (like RamFilter, DiskFilter, AggregateCoreFilter),
 otherwise you will still be limited by fake constraints !
-     
+
 
 Fake computes can also be used in multi hypervisor-type deployments in order to take advantage of fake and "real" computes during tests
 * create many fake instances for stress tests
 * create some "real" instances for functional tests
 
 Fake computes can be used for testing Nova itself but also applications on top of it.
-
-
-
-
-
 
 Contributing Your Work
 ----------------------
