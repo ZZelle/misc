@@ -168,8 +168,8 @@ instances per compute.
 
 Fake computes can also be used in multi hypervisor-type deployments
 in order to take advantage of fake and "real" computes during tests
-* create many fake instances for stress tests
-* create some "real" instances for functional tests
+- create many fake instances for stress tests
+- create some "real" instances for functional tests
 
 Fake computes can be used for testing Nova itself but also applications on top of it.
 
