@@ -1,19 +1,18 @@
 [global_config]
-  enabled_plugins = CustomCommandsMenu
   title_hide_sizetext = True
   window_state = maximise
   dbus = True
-  borderless = True
+  enabled_plugins = CustomCommandsMenu
 [keybindings]
   hide_window = F12
   copy = <Control>c
-  paste = <Control>v
   reset_clear = <Control>k
+  paste = <Control>v
 [profiles]
   [[default]]
     use_system_font = False
-    scrollback_lines = 25000
     background_darkness = 0.9
+    scrollback_lines = 25000
     background_type = transparent
     background_image = None
     font = Monospace 9
