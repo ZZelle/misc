@@ -1,0 +1,10 @@
+g() {
+  if command -v git-number &>/dev/null; then
+    git-number "$@"
+  elif [ $# -eq 0 ]; then
+    git status -sb
+  else
+    git "$@"
+  fi
+}
+complete -F _git g
