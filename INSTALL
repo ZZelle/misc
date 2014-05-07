@@ -6,6 +6,7 @@ ln -s $PWD/terminator     ~/.config
 ln -s $PWD/vim/vimrc      ~/.vimrc
 ln -s $PWD/vim/vim        ~/.vim
 ln -s $PWD/git/gitalias   ~/.gitalias
+ln -s $PWD/git/git-number ~/bin/git-number
 git config --global --replace-all include.path "~/.gitalias" "~/.gitalias"
 
 
