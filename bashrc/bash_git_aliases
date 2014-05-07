@@ -7,4 +7,5 @@ g() {
     git "$@"
   fi
 }
-complete -F _git g
+
+command -v _git &>/dev/null && complete -o bashdefault -o default -o nospace -F _git g
