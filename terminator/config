@@ -5,9 +5,7 @@
   enabled_plugins = CustomCommandsMenu
 [keybindings]
   hide_window = F12
-  copy = <Control>c
   reset_clear = <Control>k
-  paste = <Control>v
 [profiles]
   [[default]]
     use_system_font = False
