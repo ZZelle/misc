@@ -8,4 +8,4 @@ g() {
   fi
 }
 
-command -v _git &>/dev/null && complete -o bashdefault -o default -o nospace -F _git g
+complete -o bashdefault -o default -o nospace -F _git g
