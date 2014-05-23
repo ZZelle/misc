@@ -1,6 +1,6 @@
 [alias]
         alias = !git config -l | grep alias\\. | cut -c 7-
-        am = commit --amend
+        amend = commit --amend
 	b = branch -av
 	c = commit
 	cm = "!f(){ git commit -m \"$*\"; }; f"

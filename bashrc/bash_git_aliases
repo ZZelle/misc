@@ -1,11 +1,12 @@
 g() {
   if command -v git-number &>/dev/null; then
-    git-number "$@"
+    \git-number "$@"
   elif [ $# -eq 0 ]; then
-    git status -sb
+    \git status -sb
   else
-    git "$@"
+    \git "$@"
   fi
 }
+alias git=g
 
 complete -o bashdefault -o default -o nospace -F _git g
