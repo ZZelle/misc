@@ -5,3 +5,5 @@
 /ipython/profile_default/*.sqlite
 /ipython/profile_default/db
 
+# vim db
+vim/vim/.netrwhist
