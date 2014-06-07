@@ -9,4 +9,5 @@ g() {
 }
 alias git=g
 
+[ -f /usr/share/bash-completion/completions/git ] && source /usr/share/bash-completion/completions/git
 complete -o bashdefault -o default -o nospace -F _git g
