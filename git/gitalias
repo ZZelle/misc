@@ -13,5 +13,6 @@
 	lc = !git lll --no-merges ORIG_HEAD..
 	lm = !git lll --no-merges 
         number = !git-number
+        proxy = "!f(){ $@; }; f"
 	unadd = reset HEAD
         rr = "!f(){ cd $1; shift; git \"$@\"; }; f"
