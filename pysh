@@ -2,8 +2,12 @@
 import argparse
 import subprocess
 
-def run_unittests(modules):
-    subprocess.call(['python', '-munittest'] + modules)
+def run_unittests(args, modules):
+    cmd = ['python', '-munittest']
+    if args.verbose:
+        cmd += ['-v']
+    cmd += modules
+    subprocess.call(cmd)
 
 def main():
     parser = argparse.ArgumentParser(description='Module path => module name')
@@ -11,19 +15,21 @@ def main():
                         help='Module name => Module path')
     parser.add_argument('--unittest', '-u', action='store_true',
                         help='Module path => unittest')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                        help='unittest -v')
     parser.add_argument('modules', nargs='+')
 
     args = parser.parse_args()
     if args.reverse:
         if args.unittest:
-            run_unittests(args.modules)
+            run_unittests(args, args.modules)
         else:
             for module in args.modules:
                 print(module.replace('.', '/') + '.py')
     else:
         modules = [m.replace('.py', '').replace('/', '.') for m in args.modules]
         if args.unittest:
-            run_unittests(modules)
+            run_unittests(args, modules)
         else:
             print('\n'.join(modules))
 
