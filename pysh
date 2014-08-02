@@ -13,6 +13,8 @@ def main():
     parser = argparse.ArgumentParser(description='Module path => module name')
     parser.add_argument('--reverse', '-r', action='store_true',
                         help='Module name => Module path')
+    parser.add_argument('--run', '-m', action='store_true',
+                        help='run module')
     parser.add_argument('--unittest', '-u', action='store_true',
                         help='Module path => unittest')
     parser.add_argument('--verbose', '-v', action='store_true',
@@ -23,6 +25,8 @@ def main():
     if args.reverse:
         if args.unittest:
             run_unittests(args, args.modules)
+        elif args.run:
+            subprocess.call(['python', '-m'] + args.modules)
         else:
             for module in args.modules:
                 print(module.replace('.', '/') + '.py')
@@ -30,6 +34,8 @@ def main():
         modules = [m.replace('.py', '').replace('/', '.') for m in args.modules]
         if args.unittest:
             run_unittests(args, modules)
+        elif args.run:
+            subprocess.call(['python', '-m'] + modules)
         else:
             print('\n'.join(modules))
 
