@@ -18,7 +18,7 @@ _command_exists ovs-ofctl && ovsf() { sudo /usr/bin/ovs-ofctl ${@:-dump-flows br
 # python features
 python-nopyc() { export PYTHONDONTWRITEBYTECODE=1; find . -name \*.py[co] -delete;}
 python-find()  { python -c "import $1; print $1.__file__" | sed "s/\.py./\.py/" | xargs readlink -m;}
-python-grep()  { find . -name \*.py | egrep -v ${PYG:-'^$'} | xargs grep -n --color "$@";}
+python-grep()  { find ${PYGR:-'.'} -name \*.py | egrep -v ${PYG:-'^$'} | xargs grep -n --color "$@";}
 python-vi()    { FILE=$(python-find $1); test $? -eq 0 && vi -R $FILE;}
 
 
