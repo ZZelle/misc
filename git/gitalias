@@ -3,6 +3,7 @@
         amend = commit --amend
         ramend = commit --amend --no-edit
 	b = "!f(){ git branch ${@:--avv}; }; f"
+        co = checkout
 	cm = "!f(){ git commit -m \"$*\"; }; f"
         d = diff
         ds = diff --staged
