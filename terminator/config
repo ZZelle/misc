@@ -6,6 +6,9 @@
 [keybindings]
   hide_window = F12
   reset_clear = <Control>k
+  close_term = None
+  close_window = None
+
 [profiles]
   [[default]]
     use_system_font = False

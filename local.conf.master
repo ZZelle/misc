@@ -1,0 +1,34 @@
+[[local|localrc]]
+HOST_IP=192.168.128.129
+ADMIN_PASSWORD=secrete
+SERVICE_PASSWORD=secrete
+DATABASE_PASSWORD=root
+RABBIT_PASSWORD=guest
+SERVICE_TOKEN=ADMIN
+
+# multi-node
+MULTI_HOST=1
+SERVICE_HOST=$HOST_IP
+MYSQL_HOST=$SERVICE_HOST
+
+# directories
+LOGDIR=/opt/stack/ubu1/logs
+DATA_DIR=/opt/stack/ubu1/data
+SERVICE_DIR=/opt/stack/ubu1/status
+
+#RECLONE=True
+OFFLINE=True
+
+# base services
+disable_all_services
+enable_service mysql rabbit key
+
+# neutron services
+enable_service q-svc q-agt q-dhcp q-meta q-l3
+
+# neutron config
+Q_ML2_TENANT_NETWORK_TYPE=vlan
+ENABLE_TENANT_VLANS=True
+ENABLE_TENANT_TUNNELS=False
+ML2_VLAN_RANGES=phy0:101:120
+OVS_BRIDGE_MAPPINGS=phy0:br-phy0,phy1:br-phy1,phy2:br-phy2
