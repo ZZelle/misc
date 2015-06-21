@@ -77,7 +77,7 @@ def main():
         if 'status' in sys.argv:
             sys.argv[1:1] = '-c', 'color.ui=always'
             sys.argv.append('-sb')
-            print '\n'.join(rewrite_git_status(sys.argv))
+            print('\n'.join(rewrite_git_status(sys.argv)))
         else:
             args = list(rewrite_args(sys.argv))
             subprocess.call(args)
@@ -88,4 +88,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
