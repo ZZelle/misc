@@ -16,5 +16,6 @@
 	lm = !git lll --no-merges 
         number = !git-number
         proxy = "!f(){ $@; }; f"
+        sos = show --oneline --stat
 	unadd = reset HEAD
         rr = "!f(){ cd $1; shift; git \"$@\"; }; f"
