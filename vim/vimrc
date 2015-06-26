@@ -15,6 +15,8 @@ execute pathogen#infect()
 " Airline bundle
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_min_count = 2
+" Hide file encoding and smooth separators
+let g:airline_section_y = ''
 let g:airline_right_sep = ''
 let g:airline_left_sep = ''
 
