@@ -23,6 +23,9 @@ let g:airline_left_sep = ''
 
 " NerdTree bundle
 
+" Python-mode bundle
+let g:pymode_folding = 0
+let g:pymode_options_colorcolumn = 0
 
 set laststatus=2
 
