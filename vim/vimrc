@@ -8,7 +8,6 @@ set noswapfile
 
 " Map
 set pastetoggle=<F3>
-map <F2> :NERDTreeToggle<CR>
 
 " Pathogen
 execute pathogen#infect()
@@ -22,21 +21,21 @@ let g:airline_right_sep = ''
 let g:airline_left_sep = ''
 
 " NerdTree bundle
-
-" Python-mode bundle
-let g:pymode_folding = 0
-let g:pymode_options_colorcolumn = 0
-
-set laststatus=2
+map <F2> :NERDTreeToggle<CR>
 
 " syntax
 syntax on
 filetype plugin indent on
 
+" Map
+let mapleader = ","
+let g:mapleader = ","
+map <Leader>n :bnext<CR>
+
 " Highlight too long lines
 augroup vimrc_autocmds
     autocmd!
-    autocmd FileType python highlight Excess ctermbg=Red guibg=Red
+    autocmd FileType python highlight Excess ctermbg=Black guibg=Black
     autocmd FileType python match Excess /\%80v.*/
-    " autocmd FileType python set nowrap
+    autocmd FileType python set nowrap
     augroup END
