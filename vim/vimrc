@@ -27,6 +27,9 @@ map <F2> :NERDTreeToggle<CR>
 syntax on
 filetype plugin indent on
 
+" Config
+set display+=lastline
+
 " Map
 let mapleader = ","
 let g:mapleader = ","
