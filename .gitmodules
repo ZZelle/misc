@@ -7,6 +7,3 @@
 [submodule "vim/vim/bundle/nerdtree"]
 	path = vim/vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree
-[submodule "vim/vim/bundle/python-mode"]
-	path = vim/vim/bundle/python-mode
-	url = https://github.com/klen/python-mode
