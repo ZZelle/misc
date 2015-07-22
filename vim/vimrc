@@ -21,6 +21,7 @@ let g:airline_right_sep = ''
 let g:airline_left_sep = ''
 
 " NerdTree bundle
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '^__pycache__$']
 map <F2> :NERDTreeToggle<CR>
 
 " syntax
