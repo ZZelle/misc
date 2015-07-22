@@ -11,7 +11,7 @@ class OutsideRepo(Exception):
 def run_git_command(*args, **kwargs):
     kwargs.setdefault('stderr', subprocess.PIPE)
     try:
-        return subprocess.check_output(*args, **kwargs)
+        return subprocess.check_output(*args, **kwargs).decode()
     except:
         raise OutsideRepo
 
@@ -56,9 +56,9 @@ def rewrite_args(strings):
 
 def rewrite_git_status(args):
     build_filemap()
-    filetuple = get_filemap().items()
+    filetuple = list(get_filemap().items())
     filetuple += [(k, '#\t'+v) for k, v in filetuple]
-    output = subprocess.check_output(args)
+    output = subprocess.check_output(args).decode()
     for l in output.splitlines():
         ll  = l.split(' ')
         for k, v in filetuple:
