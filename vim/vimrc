@@ -24,6 +24,9 @@ let g:airline_left_sep = ''
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '^__pycache__$']
 map <F2> :NERDTreeToggle<CR>
 
+" Virtualenv bundle
+let g:virtualenv_directory = '.tox'
+
 " syntax
 syntax on
 filetype plugin indent on
