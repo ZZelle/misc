@@ -1,0 +1,26 @@
+#unset 'venv-flip'
+
+venv-flip (){
+  if [[ "$1" != "" ]]; then
+    if [[ -e "$1/bin/activate" ]]; then
+       source $1/bin/activate
+    elif [[ -e ".tox/$1/bin/activate" ]]; then
+       source .tox/$1/bin/activate
+    else
+       echo $1 not a venv?
+    fi
+  elif [[ "$VIRTUAL_ENV" = "" ]]; then
+    if [[ "$_virtual_env" != "" ]]; then
+       source $_virtual_env/bin/activate
+    elif [[ -e ".tox/py27/bin/activate" ]]; then
+       source .tox/py27/bin/activate
+    elif [[ -e ".tox/functional/bin/activate" ]]; then
+       source .tox/functional/bin/activate
+    else
+       echo No venv found!
+    fi
+  else
+    export _virtual_env="$VIRTUAL_ENV"
+    deactivate
+  fi
+}
