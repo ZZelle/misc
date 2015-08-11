@@ -12,6 +12,8 @@ let g:mapleader = ","
 map <Leader>n :bnext<CR>
 map <silent><F3> :set invpaste<CR>
 set pastetoggle=<F3>
+map <silent><F4> :NumberToggle<CR>
+imap <silent><F4> <C-O>:NumberToggle<CR>
 " Do not exit visual mode when shifting
 vnoremap > >gv
 vnoremap < <gv
