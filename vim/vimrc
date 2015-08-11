@@ -10,7 +10,11 @@ set noswapfile
 let mapleader = ","
 let g:mapleader = ","
 map <Leader>n :bnext<CR>
+map <silent><F3> :set invpaste<CR>
 set pastetoggle=<F3>
+" Do not exit visual mode when shifting
+vnoremap > >gv
+vnoremap < <gv
 
 " Pathogen
 execute pathogen#infect()
