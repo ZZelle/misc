@@ -7,6 +7,9 @@ set nobackup
 set noswapfile
 
 " Map
+let mapleader = ","
+let g:mapleader = ","
+map <Leader>n :bnext<CR>
 set pastetoggle=<F3>
 
 " Pathogen
@@ -33,11 +36,6 @@ filetype plugin indent on
 
 " Config
 set display+=lastline
-
-" Map
-let mapleader = ","
-let g:mapleader = ","
-map <Leader>n :bnext<CR>
 
 " Highlight too long lines
 augroup vimrc_autocmds
