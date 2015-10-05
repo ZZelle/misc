@@ -9,6 +9,7 @@ set noswapfile
 " Map
 let mapleader = ","
 let g:mapleader = ","
+map <Leader>j :bnext<CR>
 map <Leader>n :bnext<CR>
 map <silent><F3> :set invpaste<CR>
 set pastetoggle=<F3>
