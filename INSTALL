@@ -3,6 +3,7 @@
 PWD=$(pwd)
 ln -s $PWD/pyargs         ~/bin/
 ln -s $PWD/pysh           ~/bin/
+ln -s $PWD/ipython        ~/.ipython
 ln -s $PWD/ipython        ~/.config/
 ln -s $PWD/terminator     ~/.config/
 ln -s $PWD/vim/vimrc      ~/.vimrc
