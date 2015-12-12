@@ -11,6 +11,7 @@ let mapleader = ","
 let g:mapleader = ","
 map <Leader>j :bnext<CR>
 map <Leader>n :bnext<CR>
+map <Leader>k :bprev<CR>
 map <silent><F3> :set invpaste<CR>
 set pastetoggle=<F3>
 map <silent><F4> :NumberToggle<CR>
