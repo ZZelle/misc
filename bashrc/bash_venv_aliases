@@ -4,8 +4,10 @@ venv-flip (){
   if [[ "$1" != "" ]]; then
     if [[ -e "$1/bin/activate" ]]; then
        source $1/bin/activate
+       export _virtual_env="$1"
     elif [[ -e ".tox/$1/bin/activate" ]]; then
        source .tox/$1/bin/activate
+       export _virtual_env=".tox/$1"
     else
        echo $1 not a venv?
     fi
@@ -14,8 +16,7 @@ venv-flip (){
        source $_virtual_env/bin/activate
     elif [[ -e ".tox/py27/bin/activate" ]]; then
        source .tox/py27/bin/activate
-    elif [[ -e ".tox/functional/bin/activate" ]]; then
-       source .tox/functional/bin/activate
+       export _virtual_env=".tox/py271"
     else
        echo No venv found!
     fi
