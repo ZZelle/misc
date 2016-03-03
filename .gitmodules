@@ -19,3 +19,6 @@
 [submodule "vim/vim/bundle/vim-fugitive"]
 	path = vim/vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive
+[submodule "vim/vim/bundle/vim-ansible-yaml"]
+	path = vim/vim/bundle/vim-ansible-yaml
+	url = https://github.com/chase/vim-ansible-yaml

@@ -38,6 +38,10 @@ map <F2> :NERDTreeToggle<CR>
 " Virtualenv bundle
 let g:virtualenv_directory = '.tox'
 
+" ansible-yaml bundle
+autocmd BufNewFile,BufRead *.yaml   set filetype=ansible
+autocmd BufNewFile,BufRead *.yml    set filetype=ansible
+
 " syntax
 syntax on
 filetype plugin indent on
