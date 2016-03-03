@@ -16,7 +16,7 @@ venv-flip (){
        source $_virtual_env/bin/activate
     elif [[ -e ".tox/py27/bin/activate" ]]; then
        source .tox/py27/bin/activate
-       export _virtual_env=".tox/py271"
+       export _virtual_env=".tox/py27"
     else
        echo No venv found!
     fi
