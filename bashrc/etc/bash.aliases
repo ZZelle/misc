@@ -6,6 +6,7 @@ alias la='ls -A'
 alias c='clear'
 alias psgrep='ps -ef | grep -v grep | grep'
 alias nwgrep='netstat -tulpn | grep'
+alias uncolor="sed 's/\x1B\[[0-9;]*[JKmsu]//g'"
 publish() { (cd ${1:-'.'}; python -m SimpleHTTPServer ${2:-})}
 command -v colordiff &>/dev/null && alias diff=colordiff
 
