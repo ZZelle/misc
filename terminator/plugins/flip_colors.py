@@ -2,6 +2,7 @@ import gtk
 
 from terminatorlib import config
 from terminatorlib import plugin
+from terminatorlib import prefseditor
 from terminatorlib import terminal
 from terminatorlib import terminator
 
@@ -21,6 +22,9 @@ class FlipColors(plugin.MenuItem):
         keybindings = terminator.Terminator().keybindings
         keybindings.keys['flip_colors'] = '<Alt><Ctrl>f'
         keybindings.configure(keybindings.keys)
+
+        prefseditor.PrefsEditor.keybindingnames.update(
+            flip_colors='Flip colors')
 
     def patch_terminal(self):
         terminal.Terminal.key_flip_colors = self.flip
