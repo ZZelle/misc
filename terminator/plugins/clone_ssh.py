@@ -5,6 +5,7 @@ import gtk
 
 from terminatorlib import config
 from terminatorlib import plugin
+from terminatorlib import prefseditor
 from terminatorlib import terminal
 from terminatorlib import terminator
 from terminatorlib import version
@@ -25,6 +26,10 @@ class CloneSSH(plugin.MenuItem):
         keybindings.keys['clone_horiz'] = '<Alt><Ctrl>o'
         keybindings.keys['clone_vert'] = '<Alt><Ctrl>e'
         keybindings.configure(keybindings.keys)
+
+        prefseditor.PrefsEditor.keybindingnames.update(
+            clone_horiz='Clone horizontally',
+            clone_vert='Clone vertically')
 
     def patch_terminal(self):
         terminal.Terminal.key_clone_horiz = lambda s: self.clone_horiz(s)
