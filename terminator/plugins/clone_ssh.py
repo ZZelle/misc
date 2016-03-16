@@ -61,6 +61,8 @@ class CloneSSH(plugin.MenuItem):
                 for candidate in subprocess.check_output(cmd).splitlines():
                     candidate = candidate.strip()
                     if candidate.startswith('ssh '):
-                        config.Config().options_get().command = candidate
+                        if ' -W' not in candidate:
+                            # -W is commonly used in ssh ProxyCommand
+                            config.Config().options_get().command = candidate
             except subprocess.CalledProcessError:
                 pass
