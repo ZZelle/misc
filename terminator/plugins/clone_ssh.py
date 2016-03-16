@@ -39,7 +39,7 @@ class CloneSSH(plugin.MenuItem):
         for name, abbrev in [('Horizontally', self.clone_horiz),
                              ('Vertically', self.clone_vert)]:
             item = gtk.MenuItem('Clone %s' % name)
-            item.connect('activate', lambda widget, cwd: func(terminal))
+            item.connect('activate', lambda widget: func(terminal))
             menuitems.append(item)
 
     def clone_horiz(self, terminal):
