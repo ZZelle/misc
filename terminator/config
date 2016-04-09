@@ -14,6 +14,7 @@
     scrollback_lines = 25000
     background_type = transparent
     background_image = None
+    foreground_color = "#ffffff"
     font = Monospace 9
 [layouts]
   [[default]]
