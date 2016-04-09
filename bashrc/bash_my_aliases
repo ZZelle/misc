@@ -2,3 +2,6 @@
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export EDITOR=vi
 export PYTHONDONTWRITEBYTECODE=
+
+# Enable color in less
+export LESS='-R'
