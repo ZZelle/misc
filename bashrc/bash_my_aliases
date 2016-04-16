@@ -4,4 +4,4 @@ export EDITOR=vi
 export PYTHONDONTWRITEBYTECODE=
 
 # Enable color in less
-export LESS='-R'
+#export LESS='-R'
