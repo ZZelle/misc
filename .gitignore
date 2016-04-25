@@ -2,7 +2,7 @@
 *.py[co]
 
 # ipython db
-/ipython/profile_default/*.sqlite
+/ipython/profile_default/*.sqlite*
 /ipython/profile_default/db
 
 # vim db
