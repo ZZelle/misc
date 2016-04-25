@@ -36,11 +36,12 @@ class CloneSSH(plugin.MenuItem):
         terminal.Terminal.key_clone_vert = lambda s: self.clone_vert(s)
 
     def callback(self, menuitems, menu, terminal):
-        for name, func in [('Horizontally', self.clone_horiz),
-                             ('Vertically', self.clone_vert)]:
-            item = gtk.MenuItem('Clone %s' % name)
-            item.connect('activate', lambda widget: func(terminal))
-            menuitems.append(item)
+        item = gtk.MenuItem('Clone Horizontally')
+        item.connect('activate', lambda widget: self.clone_horiz(terminal))
+        menuitems.append(item)
+        item = gtk.MenuItem('Clone Vertically')
+        item.connect('activate', lambda widget: self.clone_vert(terminal))
+        menuitems.append(item)
 
     def clone_horiz(self, terminal):
         self.clone_prepare(terminal)
