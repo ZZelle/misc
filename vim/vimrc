@@ -12,6 +12,7 @@ let g:mapleader = ","
 map <silent><Leader>j :bnext<CR>
 map <silent><Leader>k :bprev<CR>
 map <silent><Leader>p "0p
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 map <silent><F3> :set invpaste<CR>
 set pastetoggle=<F3>
 map <silent><F4> :NumberToggle<CR>
