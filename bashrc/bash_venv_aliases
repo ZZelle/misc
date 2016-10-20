@@ -41,3 +41,31 @@ venv-requests-ca (){
   [[ -z ${VIRTUAL_ENV+no} ]] && return
   ln -sf /etc/ssl/certs/ca-certificates.crt $(python -c 'import os.path, requests; print os.path.join(os.path.dirname(requests.__file__), "cacert.pem")')
 }
+
+venv-requests-patch (){
+  [[ -z ${VIRTUAL_ENV+no} ]] && return
+  patch $(python -c 'import inspect, requests.sessions; print inspect.getsourcefile(requests.sessions)') <<EOF
+***************
+*** 445,450 ****
+--- 445,452 ----
+              If Tuple, ('cert', 'key') pair.
+          :rtype: requests.Response
+          """
++         if 'REQUEST_REQ' in os.environ:
++             print 'REQ', method, url, verify, cert, data, dict(headers)
+          # Create the Request.
+          req = Request(
+              method = method.upper(),
+***************
+*** 474,479 ****
+--- 476,483 ----
+          send_kwargs.update(settings)
+          resp = self.send(prep, **send_kwargs)
+
++         if 'REQUEST_RES' in os.environ:
++             print 'RES', resp.text
+          return resp
+
+      def get(self, url, **kwargs):
+EOF
+}
