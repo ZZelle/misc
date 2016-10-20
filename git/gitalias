@@ -2,20 +2,20 @@
         alias = !git config -l | grep alias\\. | cut -c 7-
         amend = commit --amend
         ramend = commit --amend --no-edit
-	b = "!f(){ git branch ${@:--avv}; }; f"
-        co = checkout
-	cm = "!f(){ git commit -m \"$*\"; }; f"
+        b = "!f(){ git branch ${@:--avv}; }; f"
+        cc = checkout
+        cm = "!f(){ git commit -m \"$*\"; }; f"
         d = diff
         ds = diff --staged
         dw = diff --color-words
         l = "!f(){ git ll ${@:--10}; }; f"
         la = "!f(){ git ll --all ${@:--10}; }; f"
-	ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
-	lll = !git ll --stat
-	lc = !git lll --no-merges ORIG_HEAD..
-	lm = !git lll --no-merges 
+        ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+        lll = !git ll --stat
+        lc = !git lll --no-merges ORIG_HEAD..
+        lm = !git lll --no-merges
         number = !git-number
         proxy = "!f(){ $@; }; f"
         sos = show --oneline --stat
-	unadd = reset HEAD
+        unadd = reset HEAD
         rr = "!f(){ cd $1; shift; git \"$@\"; }; f"
