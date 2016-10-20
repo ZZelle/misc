@@ -5,6 +5,7 @@
         b = "!f(){ git branch ${@:--avv}; }; f"
         cc = checkout
         cm = "!f(){ git commit -m \"$*\"; }; f"
+        cam = "!f(){ git commit -a -m \"$*\"; }; f"
         d = diff
         ds = diff --staged
         dw = diff --color-words
