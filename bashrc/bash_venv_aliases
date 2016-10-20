@@ -1,5 +1,3 @@
-#unset 'venv-flip'
-
 venv-flip (){
   if [[ "$1" != "" ]]; then
     if [[ -e "$1/bin/activate" ]]; then
@@ -33,9 +31,13 @@ venv-init (){
 }
 
 
-venv-requests (){
+venv-requests-sec (){
   [[ -z ${VIRTUAL_ENV+no} ]] && return
-
   pip install requests[security]
+}
+
+
+venv-requests-ca (){
+  [[ -z ${VIRTUAL_ENV+no} ]] && return
   ln -sf /etc/ssl/certs/ca-certificates.crt $(python -c 'import os.path, requests; print os.path.join(os.path.dirname(requests.__file__), "cacert.pem")')
 }
