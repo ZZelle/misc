@@ -6,6 +6,9 @@ venv-flip (){
     elif [[ -e ".tox/$1/bin/activate" ]]; then
        source .tox/$1/bin/activate
        export _virtual_env=".tox/$1"
+    elif [[ -e "$HOME/.venv/$1/bin/activate" ]]; then
+       source $HOME/.venv/$1/bin/activate
+       export _virtual_env="$HOME/.venv/$1"
     else
        echo $1 not a venv?
     fi
@@ -21,6 +24,20 @@ venv-flip (){
   else
     export _virtual_env="$VIRTUAL_ENV"
     deactivate
+  fi
+}
+
+
+venv-clear (){
+  [[ "$VIRTUAL_ENV" = "" ]] || deactivate
+  unset _virtual_env
+}
+
+venv-cd (){
+  if [[ "$VIRTUAL_ENV" = "" ]]; then
+    echo No venv found!
+  else
+    cd $VIRTUAL_ENV
   fi
 }
 
