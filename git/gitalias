@@ -9,6 +9,7 @@
         d = diff
         ds = diff --staged
         dw = diff --color-words
+        get = "!f(){ test $# -eq 1 && reffile=:$1 || reffile=$1:$2; git show $reffile; }; f"
         l = "!f(){ git ll ${@:--10}; }; f"
         la = "!f(){ git ll --all ${@:--10}; }; f"
         ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
