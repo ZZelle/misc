@@ -28,6 +28,15 @@ venv-flip (){
 }
 
 
+sandbox () {
+  if [[ "$VIRTUAL_ENV" = "$HOME/.venv/sandbox" ]]; then
+    venv-flip
+  else
+    venv-flip sandbox
+  fi
+}
+
+
 venv-clear (){
   [[ "$VIRTUAL_ENV" = "" ]] || deactivate
   unset _virtual_env
