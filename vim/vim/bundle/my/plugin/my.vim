@@ -37,3 +37,25 @@ function! _EditTest()
         endif
     endif
 endfunction
+
+
+command! -nargs=? GGref :call _GGref(<f-args>)
+function! _GGref(...)
+    if a:0 == 0
+        let g:gitgutter_diff_base = ''
+    else
+        let g:gitgutter_diff_base = a:1
+    endif
+    GitGutterAll
+endfunction
+
+
+command! -nargs=? GGargs :call _GGref(<f-args>)
+function! _GGref(...)
+    if a:0 == 0
+        let g:gitgutter_diff_args = ''
+    else
+        let g:gitgutter_diff_args = join(a:000, " ")
+    endif
+    GitGutterAll
+endfunction
