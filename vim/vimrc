@@ -18,6 +18,7 @@ set pastetoggle=<F3>
 map <silent><F4> :NumberToggle<CR>
 imap <silent><F4> <C-O>:NumberToggle<CR>
 map <silent><F5> :EditTest<CR>
+map <silent><F6> :GitGutterAll<CR>
 " Do not exit visual mode when shifting
 vnoremap > >gv
 vnoremap < <gv
@@ -32,6 +33,10 @@ let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline_section_y = ''
 let g:airline_right_sep = ''
 let g:airline_left_sep = ''
+
+" GitGutter bundle
+map <Leader>hj <Plug>GitGutterNextHunk
+map <Leader>hk <Plug>GitGutterPrevHunk
 
 " NerdTree bundle
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '^__pycache__$']
