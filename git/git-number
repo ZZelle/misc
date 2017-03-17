@@ -74,16 +74,24 @@ def main():
 
     sys.argv[0] = 'git'
     try:
-        if 'status' in sys.argv:
-            sys.argv[1:1] = '-c', 'color.ui=always'
-            sys.argv.append('-sb')
-            print('\n'.join(rewrite_git_status(sys.argv)))
-        else:
-            args = list(rewrite_args(sys.argv))
-            subprocess.call(args)
-    except OutsideRepo:
-        # Failback to "standard" git
-        subprocess.call(sys.argv)
+        try:
+            if 'status' in sys.argv:
+                sys.argv[1:1] = '-c', 'color.ui=always'
+                sys.argv.append('-sb')
+                for line in rewrite_git_status(sys.argv):
+                    print(line)
+            else:
+                args = list(rewrite_args(sys.argv))
+                subprocess.call(args)
+        except OutsideRepo:
+            # Failback to "standard" git
+            subprocess.call(sys.argv)
+    except IOError:
+        # Handle broken pipe, ex: git ... | head
+        try:
+            sys.stdout.flush()
+        except:
+            pass
 
 
 if __name__ == '__main__':
