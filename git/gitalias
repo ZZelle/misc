@@ -21,3 +21,5 @@
         sos = show --oneline --stat
         unadd = reset HEAD
         rr = "!f(){ cd $1; shift; git \"$@\"; }; f"
+        rt = "!f(){ git reset -q --keep @{u} && git status -sb; }; f"
+        rm-reviews ="!f(){ git for-each-ref --format='%(refname:short)' refs/heads/review/** | xargs git branch -D; }; f"
