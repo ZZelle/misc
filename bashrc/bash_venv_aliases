@@ -27,6 +27,15 @@ venv-flip (){
   fi
 }
 
+_venv_flip () {
+    local curr nbc;
+    cur="${COMP_WORDS[COMP_CWORD]}";
+    nbc="`\ls {,.tox/,~/.venv/}*/bin/pip 2>/dev/null | sed 's#.*/\(.*\)/bin/pip$#\1#'`";
+    COMPREPLY=($(compgen -W "${nbc}" -- ${curr}));
+    return 0
+}
+complete -F _venv_flip venv-flip
+
 
 sandbox () {
   if [[ "$VIRTUAL_ENV" = "$HOME/.venv/sandbox" ]]; then
