@@ -6,7 +6,7 @@ def run_unittests(args, modules):
     cmd = ['python', '-munittest']
     if args.verbose:
         cmd += ['-v']
-    cmd += modules
+    cmd.extend(modules)
     subprocess.call(cmd)
 
 def main():
@@ -31,7 +31,8 @@ def main():
             for module in args.modules:
                 print(module.replace('.', '/') + '.py')
     else:
-        modules = [m.replace('.py', '').replace('/', '.') for m in args.modules]
+        modules = (m[2:] if m.startswith('./') else m for m in args.modules)
+        modules = (m.replace('.py', '').replace('/', '.') for m in modules)
         if args.unittest:
             run_unittests(args, modules)
         elif args.run:
