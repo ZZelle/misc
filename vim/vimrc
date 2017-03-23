@@ -55,6 +55,7 @@ filetype plugin indent on
 
 " Config
 set display+=lastline
+set bg=dark
 
 " Highlight python/eruby too long lines + set indent rules
 augroup vimrc_autocmds
