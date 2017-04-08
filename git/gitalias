@@ -14,8 +14,7 @@
         la = "!f(){ git ll --all ${@:--10}; }; f"
         ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
         lll = !git ll --stat
-        lc = !git lll --no-merges ORIG_HEAD..
-        lm = !git lll --no-merges
+        lc = !git ll --no-merges @{u}..
         number = !git-number
         proxy = "!f(){ $@; }; f"
         sos = show --oneline --stat
