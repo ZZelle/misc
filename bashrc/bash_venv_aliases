@@ -28,10 +28,10 @@ venv-flip (){
 }
 
 _venv_flip () {
-    local curr nbc;
-    cur="${COMP_WORDS[COMP_CWORD]}";
-    nbc="`\ls {,.tox/,~/.venv/}*/bin/pip 2>/dev/null | sed 's#.*/\(.*\)/bin/pip$#\1#'`";
-    COMPREPLY=($(compgen -W "${nbc}" -- ${curr}));
+    local curr data;
+    curr="${COMP_WORDS[COMP_CWORD]}";
+    data="`\ls {.,.tox,~/.venv}/{.*,*}/bin/pip 2>/dev/null | sed 's#.*/\(.*\)/bin/pip$#\1#'`";
+    COMPREPLY=($(compgen -W "${data}" -- ${curr}));
     return 0
 }
 complete -F _venv_flip venv-flip
@@ -56,6 +56,14 @@ venv-cd (){
     echo No venv found!
   else
     cd $VIRTUAL_ENV
+  fi
+}
+
+venv-grep(){
+  if [[ "$VIRTUAL_ENV" = "" ]]; then
+    echo No venv found!
+  else
+    find $VIRTUAL_ENV -name \*.py | xargs grep --color -n "$@"
   fi
 }
 
