@@ -4,8 +4,10 @@ endif
 
 let g:my = 0
 
-command! NumberToggle :call _NumberToggle()
-function! _NumberToggle()
+
+" rnu/nu/none toggle.
+command! NumberToggle :call s:NumberToggle()
+function! s:NumberToggle()
     if !&nu
         set nu
         set rnu
