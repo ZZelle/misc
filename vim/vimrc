@@ -19,6 +19,7 @@ map <silent><F4> :NumberToggle<CR>
 imap <silent><F4> <C-O>:NumberToggle<CR>
 map <silent><F5> :EditTest<CR>
 map <silent><F6> :GitGutterAll<CR>
+map <silent><F7> :ZoomToggle<CR>
 " Do not exit visual mode when shifting
 vnoremap > >gv
 vnoremap < <gv

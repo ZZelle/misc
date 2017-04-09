@@ -17,6 +17,20 @@ function! _NumberToggle()
 endfunction
 
 
+" Zoom/unzoom toggle.
+command! ZoomToggle :call s:ZoomToggle()
+function! s:ZoomToggle()
+    if exists('t:unzoom')
+        execute t:unzoom
+        unlet t:unzoom
+    else
+        let t:unzoom = winrestcmd()
+        resize
+        vertical resize
+    endif
+endfunction
+
+
 command! EditTest :call _EditTest()
 function! _EditTest()
     let file_name = expand('%:t')
