@@ -75,3 +75,46 @@ function! _GGref(...)
     endif
     GitGutterAll
 endfunction
+
+
+command! -nargs=1 -complete=custom,_PuppetModuleComplete PuppetModule :call _PuppetModule(<f-args>)
+function! _PuppetModule(module)
+python << endpython
+import os, vim
+module = vim.eval("a:module")
+splitteds = [x for x in module.split(':') if x]
+splitteds.insert(0, 'modules')
+splitteds.insert(2, 'manifests')
+path = os.path.join(*splitteds) + '.pp'
+if os.path.exists(path):
+    vim.command('edit %s' % path)
+else:
+    print("Failed to load module %s" % module)
+endpython
+endfunction
+
+function! _PuppetModuleComplete(module, line, pos)
+python << endpython
+import os, vim
+module = vim.eval("a:module")
+splitteds = module.split('::')
+if len(splitteds) == 1:
+    folder = 'modules'
+    prefix = ''.join(splitteds)
+elif splitteds[-1]:
+    folder = os.path.join('modules', splitteds[0], 'manifests', *splitteds[1:-1])
+    prefix = splitteds[-1]
+else:
+    folder = os.path.join('modules', splitteds[0], 'manifests', *splitteds[1:])
+    prefix = ''
+try:
+    package = module.rstrip(prefix)
+    _, subfolders, files = os.walk(folder).next()
+    modules = [x[:-3] for x in files if x.endswith('.pp')]
+    candidates = sorted('%s%s' % (package, x) for x in modules if x.startswith(prefix))
+    candidates += sorted('%s%s::' % (package, x) for x in subfolders if x.startswith(prefix))
+    vim.command("return '%s'" % "\n".join(candidates))
+except:
+    pass
+endpython
+endfunction

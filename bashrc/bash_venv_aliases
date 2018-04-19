@@ -15,9 +15,15 @@ venv-flip (){
   elif [[ "$VIRTUAL_ENV" = "" ]]; then
     if [[ "$_virtual_env" != "" ]]; then
        source $_virtual_env/bin/activate
+    elif [[ -e ".venv/bin/activate" ]]; then
+       source .venv/bin/activate
+       export _virtual_env=".venv"
     elif [[ -e ".tox/py27/bin/activate" ]]; then
        source .tox/py27/bin/activate
        export _virtual_env=".tox/py27"
+    elif [[ -e ".tox/venv/bin/activate" ]]; then
+       source .tox/venv/bin/activate
+       export _virtual_env=".tox/venv"
     else
        echo No venv found!
     fi
@@ -82,7 +88,7 @@ venv-requests-sec (){
 
 venv-requests-ca (){
   [[ -z ${VIRTUAL_ENV+no} ]] && return
-  ln -sf /etc/ssl/certs/ca-certificates.crt $(python -c 'import os.path, requests; print os.path.join(os.path.dirname(requests.__file__), "cacert.pem")')
+  ln -sf /etc/ssl/certs/ca-certificates.crt $(python -m requests.certs)
 }
 
 venv-requests-patch (){

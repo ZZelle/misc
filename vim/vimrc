@@ -2,6 +2,9 @@ set nocompatible
 
 set hidden
 
+" Expand %%/ to current file dirname
+cabbr <expr> %% expand('%:p:h')
+
 " No backup/swap
 set nobackup
 set noswapfile
@@ -20,6 +23,7 @@ imap <silent><F4> <C-O>:NumberToggle<CR>
 map <silent><F5> :EditTest<CR>
 map <silent><F6> :GitGutterAll<CR>
 map <silent><F7> :ZoomToggle<CR>
+map <silent><F8> :PuppetModule <C-R>=expand('<cWORD>')<CR><CR>
 " Do not exit visual mode when shifting
 vnoremap > >gv
 vnoremap < <gv
@@ -47,7 +51,7 @@ map <silent><F2> :NERDTreeToggle<CR>
 let g:virtualenv_directory = '.tox'
 
 " ansible-yaml bundle
-autocmd BufNewFile,BufRead *.yaml   set filetype=ansible
+autocmd BufNewFile,BufRead *.yaml   set filetype=yaml
 autocmd BufNewFile,BufRead *.yml    set filetype=ansible
 
 " syntax

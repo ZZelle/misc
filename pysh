@@ -6,6 +6,8 @@ def run_unittests(args, modules):
     cmd = ['python', '-munittest']
     if args.verbose:
         cmd += ['-v']
+    if args.failfast:
+        cmd += ['-f']
     cmd.extend(modules)
     subprocess.call(cmd)
 
@@ -19,6 +21,10 @@ def main():
                         help='Module path => unittest')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='unittest -v')
+    parser.add_argument('--failfast', '-f', action='store_true',
+                        help='unittest -f')
+    parser.add_argument('--list', '-l', action='store_true',
+                        help='unittest --list')
     parser.add_argument('modules', nargs='+')
 
     args = parser.parse_args()
@@ -32,8 +38,12 @@ def main():
                 print(module.replace('.', '/') + '.py')
     else:
         modules = (m[2:] if m.startswith('./') else m for m in args.modules)
-        modules = [m.replace('.py', '').replace('/', '.') for m in modules]
-        if args.unittest:
+        modules = [m.replace('.py', '').replace('/', '.').rstrip('.') for m in modules]
+        if args.list:
+            cmd = 'python -m subunit.run --list %s | subunit-ls --exists'
+            for module in modules:
+                subprocess.call(cmd % module, shell=True)
+        elif args.unittest:
             run_unittests(args, modules)
         elif args.run:
             subprocess.call(['python', '-m'] + modules)
