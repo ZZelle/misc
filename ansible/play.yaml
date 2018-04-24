@@ -1,0 +1,15 @@
+- hosts: localhost
+  tasks:
+    - add_host:
+        name: "{{ item }}"
+        group: tmpgrp
+      with_items: "{{ groups[cases[case]['group']] }}"
+- hosts: tmpgrp
+  tasks:
+    - set_fact:
+        tmpgrp: "{{ cases[case] }}"
+
+- hosts: tmpgrp
+  tasks:
+    - debug:
+        var: tmpgrp.taz

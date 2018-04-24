@@ -1,0 +1,41 @@
+all:
+  vars:
+    cases:
+      s12:
+        group: servers12
+        taz: "{{ inventory_hostname }} 12"
+      s34:
+        group: servers34
+        taz: "{{ inventory_hostname }} 34"
+
+  hosts:
+    server1:
+      ansible_host: localhost
+      key: k0
+    server2:
+      ansible_host: localhost
+      key: k1
+    server3:
+      ansible_host: localhost
+      key: k0
+    server4:
+      ansible_host: localhost
+      key: k1
+
+  children:
+    servers12:
+      hosts:
+        server1:
+        server2:
+    servers34:
+      hosts:
+        server3:
+        server4:
+    servers13:
+      hosts:
+        server1:
+        server3:
+    servers24:
+      hosts:
+        server2:
+        server4:
