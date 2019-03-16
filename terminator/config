@@ -19,9 +19,6 @@
 [profiles]
   [[default]]
     background_darkness = 0.9
-    background_image = None
     background_type = transparent
-    font = Monospace 9
     foreground_color = "#ffffff"
-    scrollback_lines = 25000
-    use_system_font = False
+    scrollback_infinite = True
