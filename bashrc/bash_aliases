@@ -10,4 +10,6 @@ for FILE in ~/.bash_*_aliases; do
   source $FILE
 done
 
+[ -n "$EXTRA_ALIASES" ] && source $EXTRA_ALIASES
+
 [ $NULLGLOBED -ne 0 ] && shopt -u nullglob

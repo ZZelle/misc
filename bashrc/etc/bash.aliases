@@ -1,14 +1,15 @@
 _command_exists() { command -v $1 &>/dev/null;}
 
+
 # misc features
-alias ll='ls -lh'
-alias la='ls -A'
-alias c='clear'
-alias psgrep='ps -ef | grep -v grep | grep'
-alias nwgrep='netstat -tulpn | grep'
-alias uncolor="sed 's/\x1B\[[0-9;]*[JKmsu]//g'"
+alias ls="/bin/ls -h --color=auto"
+alias ll="ls -lh"
+alias l="ls -CF"
+alias c=clear
+alias psgrep="ps -ef | grep -v grep | grep"
+alias nwgrep="netstat -tulpn | grep"
 publish() { (cd ${1:-'.'}; python -m SimpleHTTPServer ${2:-})}
-command -v colordiff &>/dev/null && alias diff=colordiff
+_command_exists colordiff && alias diff=colordiff
 
 
 # ovs features
@@ -24,6 +25,7 @@ python-vi()    { FILE=$(python-find $1); test $? -eq 0 && vi -R $FILE;}
 
 
 # prompt features
-PS1='\[\e]0;${PTITLE-\h:\w}\a\]${PROMPT-\h:\w}\$ '
+PS1='\[\e]0;${PTITLE-\u:\w}\a\]${PROMPT-\u:\w}\$ '
+PS1='\[\e]0;${PTITLE-\u:\w}\a\]${debian_chroot:+($debian_chroot)}${PROMPT-\u:\w}\$ '
 ptitle() { [ "$#" -eq 0 ] && unset PTITLE || export PTITLE="$1";}
 prompt() { [ "$#" -eq 0 ] && unset PROMPT || export PROMPT="$1";}

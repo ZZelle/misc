@@ -35,25 +35,27 @@ endfunction
 
 command! EditTest :call _EditTest()
 function! _EditTest()
-    let file_name = expand('%:t')
+pythonx << endpython
+import os.path, vim
+name = vim.eval("expand('%:t')")
+if name.endswith('.py'):
+    path = vim.eval("expand('%:h')").split('/')
+    if name.startswith('test_'):
+        for cursor in "tests", "unit":
+            if cursor in path:
+                path.remove(cursor)
+        path.append(name[5:])
+    else:
+        path.insert(1, "tests")
+        if os.path.isdir("%s/tests/unit" % path[0]):
+            path.insert(2, "unit")
+        path.append('test_%s' % name)
 
-    if file_name =~ '\.py$'
-        let paths = split(expand('%:h'), '/')
-        if file_name !~ '^test_'
-            call extend(paths, ['tests', 'unit'], 1)
-            call add(paths, 'test_' . file_name)
-        else
-            call remove(paths, 1, 2)
-            call add(paths, file_name[5:])
-        endif
-
-        let peer_name = join(paths, '/')
-        if filereadable(peer_name)
-            exec 'edit ' peer_name
-        endif
-    endif
+    path = '/'.join(path)
+    if os.path.exists(path):
+        vim.command('edit %s' % path)
+endpython
 endfunction
-
 
 command! -nargs=? GGref :call _GGref(<f-args>)
 function! _GGref(...)
@@ -79,7 +81,7 @@ endfunction
 
 command! -nargs=1 -complete=custom,_PuppetModuleComplete PuppetModule :call _PuppetModule(<f-args>)
 function! _PuppetModule(module)
-python << endpython
+pythonx << endpython
 import os, vim
 module = vim.eval("a:module")
 splitteds = [x for x in module.split(':') if x]
@@ -94,7 +96,7 @@ endpython
 endfunction
 
 function! _PuppetModuleComplete(module, line, pos)
-python << endpython
+pythonx << endpython
 import os, vim
 module = vim.eval("a:module")
 splitteds = module.split('::')
